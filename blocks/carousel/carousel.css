@@ -1,0 +1,259 @@
+/*
+ * Electronics Store Carousel
+ * File: blocks/carousel/carousel.css
+ */
+
+/* EDS section reset for full-width carousel */
+
+main .carousel-container {
+  padding: 0;
+  margin: 0;
+}
+
+main .carousel-container > div {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+main .carousel-wrapper {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Carousel base */
+
+.carousel {
+  position: relative;
+
+  width: 100%;
+  height: 520px;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  background-color: #eaf6ff;
+  font-family: roboto, Arial, sans-serif;
+}
+
+/* Slide viewport */
+
+.carousel .carousel-slide-container {
+  display: flex;
+
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carousel .carousel-slide-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Individual slide */
+
+.carousel .carousel-slide {
+  position: relative;
+
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scroll-snap-align: start;
+}
+
+.carousel .carousel-slide > div {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Slide image */
+
+.carousel picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0;
+}
+
+/* Optional slide text */
+
+.carousel h1,
+.carousel h2,
+.carousel h3,
+.carousel p {
+  margin: 0;
+}
+
+/* Navigation arrows */
+
+.carousel .carousel-buttons {
+  position: absolute;
+  top: 50%;
+  right: 32px;
+  left: 32px;
+  z-index: 5;
+
+  display: flex;
+  justify-content: space-between;
+
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.carousel .carousel-buttons button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+  padding: 0;
+
+  color: #111827;
+  background-color: rgb(255 255 255 / 90%);
+  border: 1px solid #dbeafe;
+  border-radius: 50%;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 14%);
+
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1;
+
+  cursor: pointer;
+  pointer-events: auto;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.carousel .carousel-buttons button:hover {
+  color: #2563eb;
+  background-color: #fff;
+  box-shadow: 0 14px 30px rgb(0 0 0 / 18%);
+  transform: scale(1.06);
+}
+
+/* Dots / indicators */
+
+.carousel .carousel-indicators {
+  position: absolute;
+  right: 0;
+  bottom: 24px;
+  left: 0;
+  z-index: 6;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+.carousel .carousel-indicators button {
+  width: 11px;
+  height: 11px;
+  padding: 0;
+
+  background-color: rgb(255 255 255 / 80%);
+  border: 0;
+  border-radius: 999px;
+
+  cursor: pointer;
+
+  transition:
+    width 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.carousel .carousel-indicators button[aria-selected="true"] {
+  width: 30px;
+  background-color: #2563eb;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+  .carousel {
+    height: 420px;
+  }
+
+  .carousel .carousel-buttons {
+    right: 18px;
+    left: 18px;
+  }
+
+  .carousel .carousel-buttons button {
+    width: 42px;
+    height: 42px;
+    font-size: 24px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .carousel {
+    height: 300px;
+  }
+
+  .carousel .carousel-buttons {
+    right: 12px;
+    left: 12px;
+  }
+
+  .carousel .carousel-buttons button {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+  }
+
+  .carousel .carousel-indicators {
+    bottom: 16px;
+  }
+
+  .carousel .carousel-indicators button {
+    width: 9px;
+    height: 9px;
+  }
+
+  .carousel .carousel-indicators button[aria-selected="true"] {
+    width: 24px;
+  }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel *,
+  .carousel *::before,
+  .carousel *::after {
+    scroll-behavior: auto;
+    animation-duration: 0.01ms;
+    transition-duration: 0.01ms;
+  }
+}

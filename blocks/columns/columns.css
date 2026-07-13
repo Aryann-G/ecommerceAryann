@@ -1,33 +1,396 @@
-.columns > div {
-  display: flex;
-  flex-direction: column;
+/*
+ * Columns Block - Product Card Style
+ * File: blocks/columns/columns.css
+ */
+
+/* Wrapper and layout */
+
+.columns-wrapper {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 36px 20px 48px;
 }
 
-.columns img {
+.columns {
   width: 100%;
 }
 
-.columns > div > div {
-  order: 1;
+.columns > div,
+.columns-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+  width: 100%;
 }
 
-.columns > div > .columns-img-col {
-  order: 0;
+/* Product card */
+
+.columns > div > div,
+.columns-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 22px rgb(0 0 0 / 7%);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-.columns > div > .columns-img-col img {
+.columns > div > div:hover,
+.columns-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 12%);
+}
+
+/* Product image */
+
+.columns > div > div > p:first-child,
+.columns > div > div p:has(picture) {
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+
+.columns-card-image {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.columns picture {
   display: block;
+  width: 100%;
+  height: 100%;
 }
 
-@media (width >= 900px) {
-  .columns > div {
-    align-items: center;
-    flex-direction: unset;
-    gap: 24px;
+.columns img {
+  display: block;
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.columns-card-image img {
+  height: 100%;
+}
+
+/* Product text */
+
+.columns > div > div p,
+.columns-card-text {
+  margin: 0 24px 14px;
+  color: #444;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.columns > div > div p:has(picture) + p,
+.columns > div > div > p:first-child + p,
+.columns-card-title {
+  margin: 22px 24px 8px;
+  color: #111;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.columns > div > div p:has(picture) + p + p,
+.columns > div > div > p:first-child + p + p {
+  margin: 0 24px 20px;
+  color: #333;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+/* Product action area */
+
+.columns .product-cart-action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 40px;
+  margin: auto 24px 24px;
+  padding: 0;
+  line-height: normal;
+}
+
+/* Add to Cart button */
+
+.columns .product-cart-action .add-to-cart-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 138px;
+  min-height: 40px;
+  padding: 9px 20px;
+  border: 1px solid #111827;
+  border-radius: 999px;
+  background: #111827;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 5px 12px rgb(86 0 216 / 18%);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.columns .product-cart-action .add-to-cart-button:hover {
+  border-color: #4200aa;
+  background: #4200aa;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 7px 15px rgb(86 0 216 / 25%);
+}
+
+.columns .product-cart-action .add-to-cart-button:active {
+  transform: scale(0.97);
+}
+
+.columns .product-cart-action .add-to-cart-button:focus-visible {
+  outline: 2px solid rgb(86 0 216 / 40%);
+  outline-offset: 3px;
+}
+
+.columns .product-cart-action .add-to-cart-button[hidden] {
+  display: none;
+}
+
+/* Quantity controller */
+
+.columns .product-quantity-controls {
+  display: inline-grid;
+  grid-template-columns: 40px 42px 40px;
+  align-items: center;
+  width: 122px;
+  min-width: 122px;
+  height: 40px;
+  overflow: hidden;
+  border: 1px solid #111827;
+  border-radius: 999px;
+  background: #111827;
+  color: #fff;
+  box-shadow: 0 5px 12px rgb(86 0 216 / 18%);
+}
+
+.columns .product-quantity-controls[hidden] {
+  display: none;
+}
+
+.columns .product-quantity-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.columns .product-quantity-button:hover {
+  background: #29264d;
+}
+
+.columns .product-quantity-button:active {
+  transform: scale(0.86);
+}
+
+.columns .product-quantity-button:focus-visible {
+  outline: 2px solid #a855f7;
+  outline-offset: -3px;
+}
+
+.columns .product-quantity-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 24px;
+  border-right: 1px solid rgb(255 255 255 / 22%);
+  border-left: 1px solid rgb(255 255 255 / 22%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Section spacing and heading alignment */
+
+main > .section.columns-container > .columns-wrapper,
+main > .section.columns-container > .default-content-wrapper {
+  width: calc(100% - 48px);
+  max-width: none;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+main > .section.columns-container > .columns-wrapper {
+  margin-top: 28px;
+  margin-bottom: 28px;
+}
+
+main > .section.columns-container > .default-content-wrapper {
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
+main > .section.columns-container > .default-content-wrapper h1,
+main > .section.columns-container > .default-content-wrapper h2,
+main > .section.columns-container > .default-content-wrapper h3 {
+  margin: 0;
+}
+
+main > .section.columns-container .columns > div {
+  column-gap: 24px;
+  row-gap: 28px;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+  .columns-wrapper {
+    max-width: 720px;
+    padding: 32px 18px 44px;
   }
 
-  .columns > div > div {
-    flex: 1;
-    order: unset;
+  .columns > div,
+  .columns-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  .columns img,
+  .columns-card-image {
+    height: 220px;
+  }
+
+  .columns > div > div p,
+  .columns-card-text,
+  .columns > div > div p:has(picture) + p,
+  .columns > div > div > p:first-child + p,
+  .columns-card-title,
+  .columns .product-cart-action {
+    margin-right: 22px;
+    margin-left: 22px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .columns-wrapper {
+    max-width: 420px;
+    padding: 28px 16px 36px;
+  }
+
+  .columns > div,
+  .columns-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .columns img,
+  .columns-card-image {
+    height: 210px;
+  }
+
+  .columns > div > div,
+  .columns-card {
+    border-radius: 14px;
+  }
+
+  .columns > div > div p,
+  .columns-card-text {
+    margin: 0 20px 14px;
+    font-size: 15px;
+  }
+
+  .columns > div > div p:has(picture) + p,
+  .columns > div > div > p:first-child + p,
+  .columns-card-title {
+    margin: 20px 20px 8px;
+    font-size: 19px;
+  }
+
+  .columns > div > div p:has(picture) + p + p,
+  .columns > div > div > p:first-child + p + p {
+    margin: 0 20px 18px;
+    font-size: 16px;
+  }
+
+  .columns .product-cart-action {
+    min-height: 38px;
+    margin: auto 20px 22px;
+  }
+
+  .columns .product-cart-action .add-to-cart-button {
+    min-width: 130px;
+    min-height: 38px;
+    padding: 8px 17px;
+    font-size: 13px;
+  }
+
+  .columns .product-quantity-controls {
+    grid-template-columns: 38px 40px 38px;
+    width: 116px;
+    min-width: 116px;
+    height: 38px;
+  }
+
+  .columns .product-quantity-button {
+    width: 38px;
+    height: 36px;
+    font-size: 19px;
+  }
+
+  .columns .product-quantity-value {
+    width: 40px;
+    height: 22px;
+    font-size: 13px;
+  }
+
+  main > .section.columns-container > .columns-wrapper,
+  main > .section.columns-container > .default-content-wrapper {
+    width: calc(100% - 24px);
+  }
+
+  main > .section.columns-container > .columns-wrapper {
+    margin-top: 18px;
+    margin-bottom: 18px;
+  }
+
+  main > .section.columns-container > .default-content-wrapper {
+    margin-bottom: 14px;
+  }
+
+  main > .section.columns-container .columns > div {
+    row-gap: 20px;
   }
 }
