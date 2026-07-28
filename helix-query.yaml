@@ -1,0 +1,104 @@
+version: 1
+
+indices:
+  products:
+    include:
+      - /appletg
+      - /ipadtg
+      - /mactg
+      - /penciltg
+      - /samsungtg
+      - /sonytg
+
+    target: /products-index.json
+
+    properties:
+      productId:
+        selectFirst: 'main .product-detail > div:nth-child(1) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      productName:
+        selectFirst: 'main .product-detail > div:nth-child(2) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      brand:
+        selectFirst: 'main .product-detail > div:nth-child(3) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      category:
+        selectFirst: 'main .product-detail > div:nth-child(4) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      image:
+        selectFirst: 'main .product-detail > div:nth-child(5) > div:nth-child(2) img'
+        value: |
+          attribute(el, 'src')
+
+      imageAlt:
+        selectFirst: 'main .product-detail > div:nth-child(6) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      price:
+        selectFirst: 'main .product-detail > div:nth-child(7) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      description:
+        selectFirst: 'main .product-detail > div:nth-child(8) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      stock:
+        selectFirst: 'main .product-detail > div:nth-child(9) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      delivery:
+        selectFirst: 'main .product-detail > div:nth-child(10) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      operatingSystem:
+        selectFirst: 'main .product-detail > div:nth-child(15) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      processor:
+        selectFirst: 'main .product-detail > div:nth-child(17) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      memory:
+        selectFirst: 'main .product-detail > div:nth-child(19) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      storage:
+        selectFirst: 'main .product-detail > div:nth-child(21) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      display:
+        selectFirst: 'main .product-detail > div:nth-child(23) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      color:
+        selectFirst: 'main .product-detail > div:nth-child(25) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      battery:
+        selectFirst: 'main .product-detail > div:nth-child(27) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      path:
+        select: none
+        value: |
+          path
