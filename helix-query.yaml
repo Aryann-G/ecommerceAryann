@@ -64,41 +64,36 @@ indices:
           textContent(el)
 
       operatingSystem:
-        selectFirst: 'main .product-detail > div:nth-child(15) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(14) > div:nth-child(2)'
         value: |
           textContent(el)
 
       processor:
-        selectFirst: 'main .product-detail > div:nth-child(17) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(16) > div:nth-child(2)'
         value: |
           textContent(el)
 
       memory:
-        selectFirst: 'main .product-detail > div:nth-child(19) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(18) > div:nth-child(2)'
         value: |
           textContent(el)
 
       storage:
-        selectFirst: 'main .product-detail > div:nth-child(21) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(20) > div:nth-child(2)'
         value: |
           textContent(el)
 
       display:
-        selectFirst: 'main .product-detail > div:nth-child(23) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(22) > div:nth-child(2)'
         value: |
           textContent(el)
 
       color:
-        selectFirst: 'main .product-detail > div:nth-child(25) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(24) > div:nth-child(2)'
         value: |
           textContent(el)
 
       battery:
-        selectFirst: 'main .product-detail > div:nth-child(27) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(26) > div:nth-child(2)'
         value: |
           textContent(el)
-
-      path:
-        select: none
-        value: |
-          path
