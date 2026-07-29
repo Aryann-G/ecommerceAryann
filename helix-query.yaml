@@ -13,15 +13,6 @@ indices:
       - /fragments/**
       - /style-guide/**
 
-      # Exclude non-PLP pages
-      - /appletg
-      - /ipadtg
-      - /mactg
-      - /penciltg
-      - /samsungtg
-      - /sonytg
-      - /cart
-      - /checkout
 
     target: /query-index.json
 
