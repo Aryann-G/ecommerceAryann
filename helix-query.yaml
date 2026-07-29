@@ -3,52 +3,57 @@ version: 1
 indices:
   default:
     include:
-      - /
-      - /accessories
-      - /lenovo
+      - /**
 
-      # Add all your other PLP paths here:
-      # - /laptops
-      # - /smartphones
-      # - /cameras
-      # - /tablets
-      # - /apple
-      # - /samsung
+    exclude:
+      - /configuration/**
+      - /nav/**
+      - /footer/**
+      - /metadata/**
+      - /fragments/**
+      - /style-guide/**
+
+      # PDP pages
+      - /appletg
+      - /ipadtg
+      - /mactg
+      - /penciltg
+      - /samsungtg
+      - /sonytg
+
+      # Commerce pages
+      - /cart
+      - /checkout
 
     target: /query-index.json
 
     properties:
       title:
-        selectFirst: 'head > meta[property="og:title"]'
+        select: 'head > meta[property="og:title"]'
         value: |
           attribute(el, 'content')
 
       description:
-        selectFirst: 'head > meta[name="description"]'
+        select: 'head > meta[name="description"]'
         value: |
           attribute(el, 'content')
 
       image:
-        selectFirst: 'head > meta[property="og:image"]'
+        select: 'head > meta[property="og:image"]'
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
 
       template:
-        selectFirst: 'head > meta[name="template"]'
+        select: 'head > meta[name="template"]'
         value: |
           attribute(el, 'content')
 
       pageHeading:
-        selectFirst: 'main h1'
+        select: 'main h1:first-of-type'
         value: |
           textContent(el)
 
-      firstProductImage:
-        selectFirst: 'main .columns img'
+      listingContent:
+        select: 'main .columns'
         value: |
-          attribute(el, 'src')
-
-      productCards:
-        select: 'main .columns > div > div'
-        values: |
           textContent(el)
