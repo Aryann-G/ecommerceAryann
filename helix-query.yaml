@@ -4,13 +4,40 @@ indices:
   products:
     include:
       - /**
+
     exclude:
       - /nav/**
       - /footer/**
+      - /configuration/**
+      - /fragments/**
+      - /metadata/**
+      - /style-guide/**
 
     target: /query-index.json
 
     properties:
+      # General page information
+      title:
+        selectFirst: 'head > meta[property="og:title"]'
+        value: |
+          attribute(el, 'content')
+
+      pageDescription:
+        selectFirst: 'head > meta[name="description"]'
+        value: |
+          attribute(el, 'content')
+
+      pageImage:
+        selectFirst: 'head > meta[property="og:image"]'
+        value: |
+          attribute(el, 'content')
+
+      template:
+        selectFirst: 'head > meta[name="template"]'
+        value: |
+          attribute(el, 'content')
+
+      # Product Detail information
       productId:
         selectFirst: 'main .product-detail > div:nth-child(1) > div:nth-child(2)'
         value: |
