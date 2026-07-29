@@ -10,7 +10,7 @@ indices:
       - /samsungtg
       - /sonytg
 
-    target: /products-index.json
+    target: /query-index.json
 
     properties:
       productId:
