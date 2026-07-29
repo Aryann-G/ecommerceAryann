@@ -13,15 +13,13 @@ indices:
       - /fragments/**
       - /style-guide/**
 
-      # PDP pages
+      # Exclude non-PLP pages
       - /appletg
       - /ipadtg
       - /mactg
       - /penciltg
       - /samsungtg
       - /sonytg
-
-      # Commerce pages
       - /cart
       - /checkout
 
@@ -29,31 +27,31 @@ indices:
 
     properties:
       title:
-        select: 'head > meta[property="og:title"]'
+        selectFirst: 'head > meta[property="og:title"]'
         value: |
           attribute(el, 'content')
 
       description:
-        select: 'head > meta[name="description"]'
+        selectFirst: 'head > meta[name="description"]'
         value: |
           attribute(el, 'content')
 
       image:
-        select: 'head > meta[property="og:image"]'
+        selectFirst: 'head > meta[property="og:image"]'
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
 
-      template:
-        select: 'head > meta[name="template"]'
-        value: |
-          attribute(el, 'content')
-
       pageHeading:
-        select: 'main h1:first-of-type'
+        selectFirst: 'main h1:first-of-type'
         value: |
           textContent(el)
 
+      firstProductImage:
+        selectFirst: 'main .columns img'
+        value: |
+          attribute(el, 'src')
+
       listingContent:
-        select: 'main .columns'
+        selectFirst: 'main .columns'
         value: |
           textContent(el)
