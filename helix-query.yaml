@@ -3,12 +3,10 @@ version: 1
 indices:
   products:
     include:
-      - /appletg
-      - /ipadtg
-      - /mactg
-      - /penciltg
-      - /samsungtg
-      - /sonytg
+      - /**
+    exclude:
+      - /nav/**
+      - /footer/**
 
     target: /query-index.json
 
