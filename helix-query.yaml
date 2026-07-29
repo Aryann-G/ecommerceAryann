@@ -6,198 +6,208 @@ indices:
       - /**
 
     exclude:
+      - /configuration/**
       - /nav/**
       - /footer/**
-      - /configuration/**
-      - /fragments/**
       - /metadata/**
+      - /fragments/**
       - /style-guide/**
 
     target: /query-index.json
 
     properties:
-      # =========================================
-      # General page information
-      # Applicable to homepage, category pages,
-      # PDPs, Cart, Checkout, etc.
-      # =========================================
+      # ==========================================
+      # General information for every page
+      # ==========================================
 
       title:
-        select: 'head > meta[property="og:title"]'
+        selectFirst: 'head > meta[property="og:title"]'
         value: |
           attribute(el, 'content')
 
-      pageDescription:
-        select: 'head > meta[name="description"]'
+      description:
+        selectFirst: 'head > meta[name="description"]'
         value: |
           attribute(el, 'content')
 
-      pageImage:
-        select: 'head > meta[property="og:image"]'
+      image:
+        selectFirst: 'head > meta[property="og:image"]'
         value: |
           attribute(el, 'content')
 
       template:
-        select: 'head > meta[name="template"]'
+        selectFirst: 'head > meta[name="template"]'
+        value: |
+          attribute(el, 'content')
+
+      robots:
+        selectFirst: 'head > meta[name="robots"]'
         value: |
           attribute(el, 'content')
 
       pageHeading:
-        select: 'main h1'
+        selectFirst: 'main h1'
         value: |
           textContent(el)
 
-      pageContent:
-        select: 'main'
-        value: |
-          textContent(el)
-
-      # =========================================
-      # Product Detail page information
-      # These fields populate only on pages
-      # containing the Product Detail block.
-      # =========================================
+      # ==========================================
+      # Product Detail block information
+      # ==========================================
 
       productId:
-        select: 'main .product-detail > div:nth-child(1) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(1) > div:nth-child(2)'
         value: |
           textContent(el)
 
       productName:
-        select: 'main .product-detail > div:nth-child(2) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(2) > div:nth-child(2)'
         value: |
           textContent(el)
 
       brand:
-        select: 'main .product-detail > div:nth-child(3) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(3) > div:nth-child(2)'
         value: |
           textContent(el)
 
       category:
-        select: 'main .product-detail > div:nth-child(4) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(4) > div:nth-child(2)'
         value: |
           textContent(el)
 
-      image:
-        select: 'main .product-detail > div:nth-child(5) > div:nth-child(2) img'
+      productImage:
+        selectFirst: 'main .product-detail > div:nth-child(5) > div:nth-child(2) img'
         value: |
           attribute(el, 'src')
 
-      imageAlt:
-        select: 'main .product-detail > div:nth-child(6) > div:nth-child(2)'
+      productImageAlt:
+        selectFirst: 'main .product-detail > div:nth-child(6) > div:nth-child(2)'
         value: |
           textContent(el)
 
       price:
-        select: 'main .product-detail > div:nth-child(7) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(7) > div:nth-child(2)'
         value: |
           textContent(el)
 
-      description:
-        select: 'main .product-detail > div:nth-child(8) > div:nth-child(2)'
+      productDescription:
+        selectFirst: 'main .product-detail > div:nth-child(8) > div:nth-child(2)'
         value: |
           textContent(el)
 
       stock:
-        select: 'main .product-detail > div:nth-child(9) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(9) > div:nth-child(2)'
         value: |
           textContent(el)
 
       delivery:
-        select: 'main .product-detail > div:nth-child(10) > div:nth-child(2)'
+        selectFirst: 'main .product-detail > div:nth-child(10) > div:nth-child(2)'
         value: |
           textContent(el)
 
-      # =========================================
-      # Cart page authored information
-      # These fields populate only on /cart.
-      # =========================================
+      # ==========================================
+      # Cart block authored information
+      # ==========================================
 
       cartHeading:
-        select: 'main .cart > div:nth-child(1) > div:nth-child(2)'
+        selectFirst: 'main .cart > div:nth-child(1) > div:nth-child(2)'
         value: |
           textContent(el)
 
       cartEmptyTitle:
-        select: 'main .cart > div:nth-child(2) > div:nth-child(2)'
+        selectFirst: 'main .cart > div:nth-child(2) > div:nth-child(2)'
         value: |
           textContent(el)
 
       cartEmptyMessage:
-        select: 'main .cart > div:nth-child(3) > div:nth-child(2)'
+        selectFirst: 'main .cart > div:nth-child(3) > div:nth-child(2)'
         value: |
           textContent(el)
-
-      cartContinueLabel:
-        select: 'main .cart > div:nth-child(4) > div:nth-child(2)'
-        value: |
-          textContent(el)
-
-      cartContinueLink:
-        select: 'main .cart > div:nth-child(5) > div:nth-child(2) a'
-        value: |
-          attribute(el, 'href')
 
       cartSummaryHeading:
-        select: 'main .cart > div:nth-child(6) > div:nth-child(2)'
-        value: |
-          textContent(el)
-
-      cartItemsLabel:
-        select: 'main .cart > div:nth-child(7) > div:nth-child(2)'
+        selectFirst: 'main .cart > div:nth-child(6) > div:nth-child(2)'
         value: |
           textContent(el)
 
       cartSubtotalLabel:
-        select: 'main .cart > div:nth-child(8) > div:nth-child(2)'
+        selectFirst: 'main .cart > div:nth-child(8) > div:nth-child(2)'
         value: |
           textContent(el)
 
       cartTotalLabel:
-        select: 'main .cart > div:nth-child(9) > div:nth-child(2)'
+        selectFirst: 'main .cart > div:nth-child(9) > div:nth-child(2)'
         value: |
           textContent(el)
 
       cartCheckoutLabel:
-        select: 'main .cart > div:nth-child(10) > div:nth-child(2)'
-        value: |
-          textContent(el)
-
-      cartCheckoutLink:
-        select: 'main .cart > div:nth-child(11) > div:nth-child(2) a'
-        value: |
-          attribute(el, 'href')
-
-      cartClearLabel:
-        select: 'main .cart > div:nth-child(12) > div:nth-child(2)'
+        selectFirst: 'main .cart > div:nth-child(10) > div:nth-child(2)'
         value: |
           textContent(el)
 
       cartContent:
-        select: 'main .cart'
+        selectFirst: 'main .cart'
         value: |
           textContent(el)
 
-      # =========================================
-      # Checkout page authored information
-      # These fields populate only on /checkout.
-      # =========================================
+      # ==========================================
+      # Checkout block authored information
+      # ==========================================
 
       checkoutHeading:
-        select: 'main .checkout > div:nth-child(1) > div:nth-child(2)'
+        selectFirst: 'main .checkout > div:nth-child(1) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      checkoutContactHeading:
+        selectFirst: 'main .checkout > div:nth-child(2) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      checkoutDeliveryHeading:
+        selectFirst: 'main .checkout > div:nth-child(5) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      checkoutPaymentHeading:
+        selectFirst: 'main .checkout > div:nth-child(11) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      checkoutSummaryHeading:
+        selectFirst: 'main .checkout > div:nth-child(14) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      checkoutSubtotalLabel:
+        selectFirst: 'main .checkout > div:nth-child(16) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      checkoutShippingLabel:
+        selectFirst: 'main .checkout > div:nth-child(17) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      checkoutTotalLabel:
+        selectFirst: 'main .checkout > div:nth-child(19) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      checkoutPlaceOrderLabel:
+        selectFirst: 'main .checkout > div:nth-child(20) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      checkoutSuccessTitle:
+        selectFirst: 'main .checkout > div:nth-child(27) > div:nth-child(2)'
+        value: |
+          textContent(el)
+
+      checkoutDownloadPdfLabel:
+        selectFirst: 'main .checkout > div:nth-child(29) > div:nth-child(2)'
         value: |
           textContent(el)
 
       checkoutContent:
-        select: 'main .checkout'
+        selectFirst: 'main .checkout'
         value: |
           textContent(el)
-
-      # =========================================
-      # Page status
-      # =========================================
-
-      robots:
-        select: 'head > meta[name="robots"]'
-        value: |
-          attribute(el, 'content')
