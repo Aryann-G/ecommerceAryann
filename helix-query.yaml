@@ -1,7 +1,7 @@
 version: 1
 
 indices:
-  default:
+  plp:
     include:
       - /**
 
@@ -12,8 +12,6 @@ indices:
       - /metadata/**
       - /fragments/**
       - /style-guide/**
-
-      # Exclude non-PLP pages
       - /appletg
       - /ipadtg
       - /mactg
