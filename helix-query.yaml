@@ -8,7 +8,7 @@ indices:
     exclude:
       - /product/index
 
-    target: /query.json
+    target: /query-index.json
 
     properties:
       title:
