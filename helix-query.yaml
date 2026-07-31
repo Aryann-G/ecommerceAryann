@@ -1,27 +1,12 @@
 version: 1
 
 indices:
-  plp:
+  products:
     include:
-      - /**
+      - /product/**
 
     exclude:
-      - /configuration/**
-      - /nav/**
-      - /footer/**
-      - /metadata/**
-      - /fragments/**
-      - /style-guide/**
-      - /appletg
-      - /ipadtg
-      - /mactg
-      - /penciltg
-      - /samsungtg
-      - /sonytg
-      - /cart
-      - /checkout
-      - /ecommercearyann/home
-      - /ecommercearyanncap/home
+      - /product/index
 
     target: /query-index.json
 
@@ -41,17 +26,57 @@ indices:
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
 
-      pageHeading:
-        selectFirst: 'main h1:first-of-type'
+      template:
+        selectFirst: 'head > meta[name="template"]'
         value: |
-          textContent(el)
+          attribute(el, 'content')
 
-      firstProductImage:
-        selectFirst: 'main .columns img'
+      productId:
+        selectFirst: 'head > meta[name="product-id"]'
         value: |
-          attribute(el, 'src')
+          attribute(el, 'content')
 
-      listingContent:
-        selectFirst: 'main .columns'
+      brand:
+        selectFirst: 'head > meta[name="brand"]'
         value: |
-          textContent(el)
+          attribute(el, 'content')
+
+      category:
+        selectFirst: 'head > meta[name="category"]'
+        value: |
+          attribute(el, 'content')
+
+      type:
+        selectFirst: 'head > meta[name="type"]'
+        value: |
+          attribute(el, 'content')
+
+      price:
+        selectFirst: 'head > meta[name="price"]'
+        value: |
+          attribute(el, 'content')
+
+      stockStatus:
+        selectFirst: 'head > meta[name="stock-status"]'
+        value: |
+          attribute(el, 'content')
+
+      delivery:
+        selectFirst: 'head > meta[name="delivery"]'
+        value: |
+          attribute(el, 'content')
+
+      tag:
+        selectFirst: 'head > meta[name="tag"]'
+        value: |
+          attribute(el, 'content')
+
+      colors:
+        selectFirst: 'head > meta[name="colors"]'
+        value: |
+          attribute(el, 'content')
+
+      imageAlt:
+        selectFirst: 'head > meta[name="image-alt"]'
+        value: |
+          attribute(el, 'content')

@@ -15,53 +15,53 @@ import { downloadOrderPdf } from '../../scripts/order-pdf.js';
  * These values are used only when the corresponding
  * values are not authored in the AEM Checkout block.
  */
-const DEFAULT_CONFIG = {
-  heading: 'Checkout',
-  'contact-heading': 'Contact Information',
-  'email-label': 'Email Address',
-  'phone-label': 'Phone Number',
-  'delivery-heading': 'Delivery Address',
-  'name-label': 'Full Name',
-  'address-label': 'Address',
-  'city-label': 'City',
-  'state-label': 'State',
-  'postal-code-label': 'Postal Code',
-  'payment-heading': 'Payment Method',
-  'cod-label': 'Cash on Delivery',
-  'demo-payment-label': 'Demo Online Payment',
-  'summary-heading': 'Order Summary',
-  'items-label': 'Total Items',
-  'subtotal-label': 'Subtotal',
-  'shipping-label': 'Shipping',
-  'shipping-value': '0',
-  'total-label': 'Total Amount',
-  'place-order-label': 'Place Order',
-  'back-cart-label': 'Back to Cart',
-  'back-cart-link': '/cart',
-  'empty-title': 'Your cart is empty',
-  'empty-message': 'Add products before continuing to checkout.',
-  'continue-label': 'Continue Shopping',
-  'continue-link': '/',
-  'success-title': 'Order Placed Successfully',
-  'success-message': 'Thank you for shopping with ElectroMart.',
-  'order-number-label': 'Order number',
+// const DEFAULT_CONFIG = {
+//   heading: 'Checkout',
+//   'contact-heading': 'Contact Information',
+//   'email-label': 'Email Address',
+//   'phone-label': 'Phone Number',
+//   'delivery-heading': 'Delivery Address',
+//   'name-label': 'Full Name',
+//   'address-label': 'Address',
+//   'city-label': 'City',
+//   'state-label': 'State',
+//   'postal-code-label': 'Postal Code',
+//   'payment-heading': 'Payment Method',
+//   'cod-label': 'Cash on Delivery',
+//   'demo-payment-label': 'Demo Online Payment',
+//   'summary-heading': 'Order Summary',
+//   'items-label': 'Total Items',
+//   'subtotal-label': 'Subtotal',
+//   'shipping-label': 'Shipping',
+//   'shipping-value': '0',
+//   'total-label': 'Total Amount',
+//   'place-order-label': 'Place Order',
+//   'back-cart-label': 'Back to Cart',
+//   'back-cart-link': '/cart',
+//   'empty-title': 'Your cart is empty',
+//   'empty-message': 'Add products before continuing to checkout.',
+//   'continue-label': 'Continue Shopping',
+//   'continue-link': '/',
+//   'success-title': 'Order Placed Successfully',
+//   'success-message': 'Thank you for shopping with ElectroMart.',
+//   'order-number-label': 'Order number',
 
-  /*
-   * PDF configuration
-   */
-  'download-pdf-label': 'Download Purchase PDF',
-  'preparing-pdf-label': 'Preparing PDF...',
-  'pdf-error-message': 'Unable to create the PDF. Please try again.',
-  'receipt-title': 'ElectroMart Purchase Receipt',
-  'order-date-label': 'Order Date',
-  'customer-label': 'Customer Details',
-  'delivery-label': 'Delivery Address',
-  'payment-label': 'Payment Method',
-  'product-label': 'Product',
-  'quantity-label': 'Quantity',
-  'unit-price-label': 'Unit Price',
-  'line-total-label': 'Amount',
-};
+//   /*
+//    * PDF configuration
+//    */
+//   'download-pdf-label': 'Download Purchase PDF',
+//   'preparing-pdf-label': 'Preparing PDF...',
+//   'pdf-error-message': 'Unable to create the PDF. Please try again.',
+//   'receipt-title': 'ElectroMart Purchase Receipt',
+//   'order-date-label': 'Order Date',
+//   'customer-label': 'Customer Details',
+//   'delivery-label': 'Delivery Address',
+//   'payment-label': 'Payment Method',
+//   'product-label': 'Product',
+//   'quantity-label': 'Quantity',
+//   'unit-price-label': 'Unit Price',
+//   'line-total-label': 'Amount',
+// };
 
 /**
  * Creates an HTML element.
@@ -113,7 +113,7 @@ function getCheckoutConfig(block) {
   });
 
   return {
-    ...DEFAULT_CONFIG,
+    // ...DEFAULT_CONFIG,
     ...authoredConfig,
   };
 }
