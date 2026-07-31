@@ -1,7 +1,7 @@
 version: 1
 
 indices:
-  products:
+  default:
     include:
       - /product/**
 
@@ -12,71 +12,66 @@ indices:
 
     properties:
       title:
-        selectFirst: 'head > meta[property="og:title"]'
+        select: head > meta[property="og:title"]
         value: |
           attribute(el, 'content')
 
       description:
-        selectFirst: 'head > meta[name="description"]'
+        select: head > meta[name="description"]
         value: |
           attribute(el, 'content')
 
       image:
-        selectFirst: 'head > meta[property="og:image"]'
+        select: head > meta[property="og:image"]
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
 
       template:
-        selectFirst: 'head > meta[name="template"]'
+        select: head > meta[name="template"]
         value: |
           attribute(el, 'content')
 
       productId:
-        selectFirst: 'head > meta[name="product-id"]'
+        select: head > meta[name="product-id"]
         value: |
           attribute(el, 'content')
 
       brand:
-        selectFirst: 'head > meta[name="brand"]'
+        select: head > meta[name="brand"]
         value: |
           attribute(el, 'content')
 
       category:
-        selectFirst: 'head > meta[name="category"]'
-        value: |
-          attribute(el, 'content')
-
-      type:
-        selectFirst: 'head > meta[name="type"]'
+        select: head > meta[name="category"]
         value: |
           attribute(el, 'content')
 
       price:
-        selectFirst: 'head > meta[name="price"]'
+        select: head > meta[name="price"]
         value: |
           attribute(el, 'content')
 
-      stockStatus:
-        selectFirst: 'head > meta[name="stock-status"]'
-        value: |
-          attribute(el, 'content')
-
-      delivery:
-        selectFirst: 'head > meta[name="delivery"]'
-        value: |
-          attribute(el, 'content')
-
-      tag:
-        selectFirst: 'head > meta[name="tag"]'
+      type:
+        select: head > meta[name="type"]
         value: |
           attribute(el, 'content')
 
       colors:
-        selectFirst: 'head > meta[name="colors"]'
+        select: head > meta[name="colors"]
+        value: |
+          attribute(el, 'content')
+
+      stockStatus:
+        select: head > meta[name="stock-status"]
+        value: |
+          attribute(el, 'content')
+
+      delivery:
+        select: head > meta[name="delivery"]
         value: |
           attribute(el, 'content')
 
       imageAlt:
-        selectFirst: 'head > meta[name="image-alt"]'
+        select: head > meta[name="image-alt"]
         value: |
           attribute(el, 'content')
