@@ -3,6 +3,10 @@ version: 1
 indices:
   default:
     include:
+      - /
+      - /newarrivals
+      - /categories/**
+      - /brands/**
       - /product/**
 
     exclude:
@@ -53,6 +57,11 @@ indices:
 
       type:
         select: head > meta[name="type"]
+        value: |
+          attribute(el, 'content')
+
+      tag:
+        select: head > meta[name="tag"]
         value: |
           attribute(el, 'content')
 
