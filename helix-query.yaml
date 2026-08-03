@@ -3,11 +3,7 @@ version: 1
 indices:
   default:
     include:
-      - /
-      - /newarrivals
-      - /categories/**
       - /brands/**
-      - /product/**
 
     exclude:
       - /product/index
@@ -46,7 +42,7 @@ indices:
           attribute(el, 'content')
 
       category:
-        select: head > meta[name="category"]
+        select: head > meta[name="category"][content="brands"]
         value: |
           attribute(el, 'content')
 
