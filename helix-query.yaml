@@ -6,6 +6,9 @@ indices:
       - /brands/**
 
     exclude:
+      - /product/**
+      - /category/**
+      - /categories/**
       - /product/index
 
     target: /query-index.json
