@@ -11,6 +11,7 @@ indices:
 
     exclude:
       - /product/index
+       - /brands/apple
 
     target: /query-index.json
 
