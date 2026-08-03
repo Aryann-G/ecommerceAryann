@@ -3,12 +3,13 @@ version: 1
 indices:
   default:
     include:
+      - /
+      - /newarrivals
+      - /categories/**
       - /brands/**
+      - /product/**
 
     exclude:
-      - /product/**
-      - /category/**
-      - /categories/**
       - /product/index
 
     target: /query-index.json
@@ -45,7 +46,7 @@ indices:
           attribute(el, 'content')
 
       category:
-        select: head > meta[name="category"][content="brands"]
+        select: head > meta[name="category"]
         value: |
           attribute(el, 'content')
 
