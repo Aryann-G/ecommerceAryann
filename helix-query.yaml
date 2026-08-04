@@ -3,87 +3,90 @@ version: 1
 indices:
   default:
     include:
-      - /
       - /newarrivals
       - /categories/**
       - /brands/**
       - /product/**
 
     exclude:
+      - /categories/index
+      - /brands/index
       - /product/index
 
     target: /query-index.json
 
     properties:
       title:
-        select: head > meta[property="og:title"]
+        selectFirst: head > meta[property="og:title"]
         value: |
           attribute(el, 'content')
 
       description:
-        select: head > meta[name="description"]
+        selectFirst: head > meta[name="description"]
         value: |
           attribute(el, 'content')
 
       image:
-        select: head > meta[property="og:image"]
+        selectFirst: head > meta[property="og:image"]
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
 
       template:
-        select: head > meta[name="template"]
+        selectFirst: head > meta[name="template"]
         value: |
           attribute(el, 'content')
 
       productId:
-        select: head > meta[name="product-id"]
+        selectFirst: head > meta[name="product-id"]
         value: |
           attribute(el, 'content')
-productName:
-  selectFirst: head > meta[name="product-name"]
-  value: |
-    attribute(el, 'content')
+
+      productName:
+        selectFirst: head > meta[name="product-name"]
+        value: |
+          attribute(el, 'content')
+
       brand:
-        select: head > meta[name="brand"]
+        selectFirst: head > meta[name="brand"], head > meta[name="product-brand"], head > meta[name="productBrand"]
         value: |
           attribute(el, 'content')
 
       category:
-        select: head > meta[name="category"]
+        selectFirst: head > meta[name="category"], head > meta[name="product-category"], head > meta[name="productCategory"], head > meta[property="article:section"]
         value: |
           attribute(el, 'content')
 
       price:
-        select: head > meta[name="price"]
+        selectFirst: head > meta[name="price"]
         value: |
           attribute(el, 'content')
 
       type:
-        select: head > meta[name="type"]
+        selectFirst: head > meta[name="type"], head > meta[name="product-type"], head > meta[name="productType"]
         value: |
           attribute(el, 'content')
 
       tag:
-        select: head > meta[name="tag"]
+        selectFirst: head > meta[name="tag"]
         value: |
           attribute(el, 'content')
 
       colors:
-        select: head > meta[name="colors"]
+        selectFirst: head > meta[name="colors"]
         value: |
           attribute(el, 'content')
 
       stockStatus:
-        select: head > meta[name="stock-status"]
+        selectFirst: head > meta[name="stock-status"]
         value: |
           attribute(el, 'content')
 
       delivery:
-        select: head > meta[name="delivery"]
+        selectFirst: head > meta[name="delivery"]
         value: |
           attribute(el, 'content')
 
       imageAlt:
-        select: head > meta[name="image-alt"]
+        selectFirst: head > meta[name="image-alt"]
         value: |
           attribute(el, 'content')
