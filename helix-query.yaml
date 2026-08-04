@@ -39,7 +39,10 @@ indices:
         select: head > meta[name="product-id"]
         value: |
           attribute(el, 'content')
-
+      productName:
+        select: head > meta[name="product-name"]
+        value: |
+          attribute(el, 'content')
       brand:
         select: head > meta[name="brand"]
         value: |
