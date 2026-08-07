@@ -12,61 +12,84 @@ import {
 import { downloadOrderPdf } from '../../scripts/order-pdf.js';
 
 /*
- * These values are used only when the corresponding
- * values are not authored in the AEM Checkout block.
+ * Completed orders are stored separately from the cart.
  */
-// const DEFAULT_CONFIG = {
-//   heading: 'Checkout',
-//   'contact-heading': 'Contact Information',
-//   'email-label': 'Email Address',
-//   'phone-label': 'Phone Number',
-//   'delivery-heading': 'Delivery Address',
-//   'name-label': 'Full Name',
-//   'address-label': 'Address',
-//   'city-label': 'City',
-//   'state-label': 'State',
-//   'postal-code-label': 'Postal Code',
-//   'payment-heading': 'Payment Method',
-//   'cod-label': 'Cash on Delivery',
-//   'demo-payment-label': 'Demo Online Payment',
-//   'summary-heading': 'Order Summary',
-//   'items-label': 'Total Items',
-//   'subtotal-label': 'Subtotal',
-//   'shipping-label': 'Shipping',
-//   'shipping-value': '0',
-//   'total-label': 'Total Amount',
-//   'place-order-label': 'Place Order',
-//   'back-cart-label': 'Back to Cart',
-//   'back-cart-link': '/cart',
-//   'empty-title': 'Your cart is empty',
-//   'empty-message': 'Add products before continuing to checkout.',
-//   'continue-label': 'Continue Shopping',
-//   'continue-link': '/',
-//   'success-title': 'Order Placed Successfully',
-//   'success-message': 'Thank you for shopping with ElectroMart.',
-//   'order-number-label': 'Order number',
+const ORDERS_STORAGE_KEY = 'electromart-orders';
 
-//   /*
-//    * PDF configuration
-//    */
-//   'download-pdf-label': 'Download Purchase PDF',
-//   'preparing-pdf-label': 'Preparing PDF...',
-//   'pdf-error-message': 'Unable to create the PDF. Please try again.',
-//   'receipt-title': 'ElectroMart Purchase Receipt',
-//   'order-date-label': 'Order Date',
-//   'customer-label': 'Customer Details',
-//   'delivery-label': 'Delivery Address',
-//   'payment-label': 'Payment Method',
-//   'product-label': 'Product',
-//   'quantity-label': 'Quantity',
-//   'unit-price-label': 'Unit Price',
-//   'line-total-label': 'Amount',
-// };
+/**
+ * Reads all previously placed orders from localStorage.
+ */
+function getSavedOrders() {
+  try {
+    const storedOrders = localStorage.getItem(
+      ORDERS_STORAGE_KEY,
+    );
+
+    if (!storedOrders) {
+      return [];
+    }
+
+    const orders = JSON.parse(storedOrders);
+
+    return Array.isArray(orders) ? orders : [];
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn('Unable to read saved orders:', error);
+
+    return [];
+  }
+}
+
+/**
+ * Saves a completed order without deleting older orders.
+ */
+function saveOrderToHistory(order) {
+  try {
+    const orders = getSavedOrders();
+
+    /*
+     * Prevent the same order from being saved twice.
+     */
+    const alreadySaved = orders.some(
+      (savedOrder) => (
+        savedOrder.orderNumber === order.orderNumber
+      ),
+    );
+
+    if (!alreadySaved) {
+      /*
+       * Add the newest order at the beginning.
+       */
+      orders.unshift(order);
+    }
+
+    localStorage.setItem(
+      ORDERS_STORAGE_KEY,
+      JSON.stringify(orders),
+    );
+
+    window.dispatchEvent(
+      new CustomEvent('orders:updated', {
+        detail: {
+          order,
+          orders,
+        },
+      }),
+    );
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn('Unable to save order history:', error);
+  }
+}
 
 /**
  * Creates an HTML element.
  */
-function createElement(tagName, className = '', text = undefined) {
+function createElement(
+  tagName,
+  className = '',
+  text = undefined,
+) {
   const element = document.createElement(tagName);
 
   if (className) {
@@ -104,7 +127,8 @@ function getCheckoutConfig(block) {
     const link = valueCell.querySelector('a');
 
     const value = link
-      ? link.getAttribute('href') || link.textContent.trim()
+      ? link.getAttribute('href')
+        || link.textContent.trim()
       : valueCell.textContent.trim();
 
     if (value) {
@@ -112,10 +136,7 @@ function getCheckoutConfig(block) {
     }
   });
 
-  return {
-    // ...DEFAULT_CONFIG,
-    ...authoredConfig,
-  };
+  return authoredConfig;
 }
 
 /**
@@ -123,7 +144,9 @@ function getCheckoutConfig(block) {
  */
 function calculateTotalQuantity(cart) {
   return cart.reduce(
-    (total, product) => total + Number(product.quantity || 0),
+    (total, product) => (
+      total + Number(product.quantity || 0)
+    ),
     0,
   );
 }
@@ -150,7 +173,9 @@ function calculateSubtotal(cart) {
  * ₹99 -> 99
  */
 function getShippingAmount(config) {
-  const shippingValue = String(config['shipping-value'] || '0')
+  const shippingValue = String(
+    config['shipping-value'] || '0',
+  )
     .replace(/,/g, '')
     .replace(/[^\d.-]/g, '');
 
@@ -177,7 +202,10 @@ function createFormField({
     ? 'checkout-field checkout-field-full'
     : 'checkout-field';
 
-  const wrapper = createElement('div', wrapperClass);
+  const wrapper = createElement(
+    'div',
+    wrapperClass,
+  );
 
   const labelElement = createElement(
     'label',
@@ -489,8 +517,10 @@ function createSummaryProduct(product) {
     `× ${Number(product.quantity || 0)}`,
   );
 
-  const productTotal = Number(product.price || 0)
-    * Number(product.quantity || 0);
+  const productTotal = (
+    Number(product.price || 0)
+    * Number(product.quantity || 0)
+  );
 
   const price = createElement(
     'p',
@@ -514,8 +544,14 @@ function createSummaryProduct(product) {
 /**
  * Creates one calculation row in the order summary.
  */
-function createSummaryRow(label, value, extraClass = '') {
-  const classes = `checkout-summary-row ${extraClass}`.trim();
+function createSummaryRow(
+  label,
+  value,
+  extraClass = '',
+) {
+  const classes = (
+    `checkout-summary-row ${extraClass}`
+  ).trim();
 
   const row = createElement(
     'div',
@@ -568,7 +604,9 @@ function createOrderSummary(cart, config) {
   );
 
   cart.forEach((product) => {
-    products.append(createSummaryProduct(product));
+    products.append(
+      createSummaryProduct(product),
+    );
   });
 
   const itemRow = createSummaryRow(
@@ -599,6 +637,7 @@ function createOrderSummary(cart, config) {
   );
 
   placeOrderButton.type = 'submit';
+
   placeOrderButton.setAttribute(
     'form',
     'checkout-order-form',
@@ -667,7 +706,11 @@ function renderEmptyCheckout(block, config) {
 /**
  * Displays the order-success state.
  */
-function renderOrderSuccess(block, config, order) {
+function renderOrderSuccess(
+  block,
+  config,
+  order,
+) {
   block.replaceChildren();
 
   const success = createElement(
@@ -681,7 +724,10 @@ function renderOrderSuccess(block, config, order) {
     '✓',
   );
 
-  icon.setAttribute('aria-hidden', 'true');
+  icon.setAttribute(
+    'aria-hidden',
+    'true',
+  );
 
   const title = createElement(
     'h2',
@@ -709,22 +755,43 @@ function renderOrderSuccess(block, config, order) {
 
   downloadButton.type = 'button';
 
-  downloadButton.addEventListener('click', async () => {
-    const originalButtonText = config['download-pdf-label'];
+  downloadButton.addEventListener(
+    'click',
+    async () => {
+      const originalButtonText = (
+        config['download-pdf-label']
+      );
 
-    downloadButton.disabled = true;
-    downloadButton.textContent = config['preparing-pdf-label'];
+      downloadButton.disabled = true;
 
-    try {
-      await downloadOrderPdf(order, config);
-    } catch (error) {
-      console.error('Unable to create purchase PDF:', error);
-      window.alert(config['pdf-error-message']);
-    } finally {
-      downloadButton.disabled = false;
-      downloadButton.textContent = originalButtonText;
-    }
-  });
+      downloadButton.textContent = (
+        config['preparing-pdf-label']
+      );
+
+      try {
+        await downloadOrderPdf(
+          order,
+          config,
+        );
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(
+          'Unable to create purchase PDF:',
+          error,
+        );
+
+        window.alert(
+          config['pdf-error-message'],
+        );
+      } finally {
+        downloadButton.disabled = false;
+
+        downloadButton.textContent = (
+          originalButtonText
+        );
+      }
+    },
+  );
 
   const continueLink = createElement(
     'a',
@@ -750,13 +817,19 @@ function renderOrderSuccess(block, config, order) {
  * Removes previous validation messages.
  */
 function clearValidationErrors(form) {
-  form.querySelectorAll('.checkout-field').forEach((field) => {
-    field.classList.remove('has-error');
+  form
+    .querySelectorAll('.checkout-field')
+    .forEach((field) => {
+      field.classList.remove('has-error');
 
-    field
-      .querySelectorAll('.checkout-field-error')
-      .forEach((error) => error.remove());
-  });
+      field
+        .querySelectorAll(
+          '.checkout-field-error',
+        )
+        .forEach((error) => {
+          error.remove();
+        });
+    });
 }
 
 /**
@@ -776,7 +849,9 @@ function validateCheckoutForm(form) {
   requiredFields.forEach((field) => {
     if (field.checkValidity()) return;
 
-    const wrapper = field.closest('.checkout-field');
+    const wrapper = field.closest(
+      '.checkout-field',
+    );
 
     if (wrapper) {
       wrapper.classList.add('has-error');
@@ -797,6 +872,7 @@ function validateCheckoutForm(form) {
 
   if (firstInvalidField) {
     firstInvalidField.focus();
+
     return false;
   }
 
@@ -804,7 +880,7 @@ function validateCheckoutForm(form) {
 }
 
 /**
- * Creates a simple six-digit demo order number.
+ * Creates a simple six-digit order number.
  *
  * Example:
  * EM-438275
@@ -818,20 +894,38 @@ function createOrderNumber() {
 }
 
 /**
- * Creates a complete order object for the receipt.
+ * Creates a complete order object.
  */
 function createOrder(form, cart, config) {
   const formData = new FormData(form);
   const subtotal = calculateSubtotal(cart);
   const shipping = getShippingAmount(config);
+  const createdAt = new Date();
 
   return {
     orderNumber: createOrderNumber(),
-    orderDate: new Date().toLocaleString('en-IN'),
-    customer: Object.fromEntries(formData.entries()),
+
+    /*
+     * ISO date used for sorting.
+     */
+    createdAt: createdAt.toISOString(),
+
+    /*
+     * Formatted date used for display and PDF.
+     */
+    orderDate: createdAt.toLocaleString(
+      'en-IN',
+    ),
+
+    customer: Object.fromEntries(
+      formData.entries(),
+    ),
+
     products: cart.map((product) => ({
       ...product,
     })),
+
+    totalItems: calculateTotalQuantity(cart),
     subtotal,
     shipping,
     total: subtotal + shipping,
@@ -841,7 +935,11 @@ function createOrder(form, cart, config) {
 /**
  * Renders the checkout page.
  */
-function renderCheckout(block, config, state) {
+function renderCheckout(
+  block,
+  config,
+  state,
+) {
   block.replaceChildren();
 
   if (state.order) {
@@ -865,7 +963,11 @@ function renderCheckout(block, config, state) {
   const cart = getCart();
 
   if (cart.length === 0) {
-    renderEmptyCheckout(block, config);
+    renderEmptyCheckout(
+      block,
+      config,
+    );
+
     return;
   }
 
@@ -875,7 +977,11 @@ function renderCheckout(block, config, state) {
   );
 
   const form = createCheckoutForm(config);
-  const summary = createOrderSummary(cart, config);
+
+  const summary = createOrderSummary(
+    cart,
+    config,
+  );
 
   content.append(
     form,
@@ -886,7 +992,7 @@ function renderCheckout(block, config, state) {
 }
 
 /**
- * Handles form submission.
+ * Handles checkout form submission.
  */
 function handleCheckoutSubmit(
   event,
@@ -894,7 +1000,9 @@ function handleCheckoutSubmit(
   config,
   state,
 ) {
-  const form = event.target.closest('.checkout-form');
+  const form = event.target.closest(
+    '.checkout-form',
+  );
 
   if (!form) return;
 
@@ -907,12 +1015,18 @@ function handleCheckoutSubmit(
   const cart = getCart();
 
   if (cart.length === 0) {
-    renderCheckout(block, config, state);
+    renderCheckout(
+      block,
+      config,
+      state,
+    );
+
     return;
   }
 
   /*
-   * Create the complete order before clearing the cart.
+   * Create the complete order before clearing
+   * the cart.
    */
   state.order = createOrder(
     form,
@@ -921,8 +1035,13 @@ function handleCheckoutSubmit(
   );
 
   /*
-   * Keep a temporary copy of the latest order.
-   * It remains available during the current browser tab session.
+   * Save the completed order permanently.
+   */
+  saveOrderToHistory(state.order);
+
+  /*
+   * Keep a temporary copy of the latest order
+   * for the current browser tab.
    */
   try {
     sessionStorage.setItem(
@@ -930,12 +1049,20 @@ function handleCheckoutSubmit(
       JSON.stringify(state.order),
     );
   } catch (error) {
-    console.warn('Unable to save the latest order:', error);
+    // eslint-disable-next-line no-console
+    console.warn(
+      'Unable to save the latest order:',
+      error,
+    );
   }
 
   clearCart();
 
-  renderCheckout(block, config, state);
+  renderCheckout(
+    block,
+    config,
+    state,
+  );
 }
 
 /**
@@ -947,17 +1074,28 @@ function handleCheckoutInput(event) {
     'input, textarea, select',
   );
 
-  if (!field || !field.checkValidity()) return;
+  if (
+    !field
+    || !field.checkValidity()
+  ) {
+    return;
+  }
 
-  const wrapper = field.closest('.checkout-field');
+  const wrapper = field.closest(
+    '.checkout-field',
+  );
 
   if (!wrapper) return;
 
   wrapper.classList.remove('has-error');
 
   wrapper
-    .querySelectorAll('.checkout-field-error')
-    .forEach((error) => error.remove());
+    .querySelectorAll(
+      '.checkout-field-error',
+    )
+    .forEach((error) => {
+      error.remove();
+    });
 }
 
 /**
@@ -965,8 +1103,8 @@ function handleCheckoutInput(event) {
  */
 export default function decorate(block) {
   /*
-   * Read AEM-authored values before removing
-   * the original block rows.
+   * Read the AEM-authored values before
+   * replacing the original block rows.
    */
   const config = getCheckoutConfig(block);
 
@@ -974,16 +1112,23 @@ export default function decorate(block) {
     order: null,
   };
 
-  renderCheckout(block, config, state);
+  renderCheckout(
+    block,
+    config,
+    state,
+  );
 
-  block.addEventListener('submit', (event) => {
-    handleCheckoutSubmit(
-      event,
-      block,
-      config,
-      state,
-    );
-  });
+  block.addEventListener(
+    'submit',
+    (event) => {
+      handleCheckoutSubmit(
+        event,
+        block,
+        config,
+        state,
+      );
+    },
+  );
 
   block.addEventListener(
     'input',
@@ -991,25 +1136,39 @@ export default function decorate(block) {
   );
 
   /*
-   * Re-renders the checkout when the cart is
-   * updated on the current page.
+   * Re-render when the cart changes
+   * on the current page.
    */
-  window.addEventListener('cart:updated', () => {
-    renderCheckout(block, config, state);
-  });
+  window.addEventListener(
+    'cart:updated',
+    () => {
+      renderCheckout(
+        block,
+        config,
+        state,
+      );
+    },
+  );
 
   /*
-   * Re-renders the checkout when another browser
-   * tab changes the localStorage cart.
+   * Re-render when another browser tab
+   * changes the cart.
    */
-  window.addEventListener('storage', (event) => {
-    if (
-      event.key
-      && event.key !== 'electromart-cart'
-    ) {
-      return;
-    }
+  window.addEventListener(
+    'storage',
+    (event) => {
+      if (
+        event.key
+        && event.key !== 'electromart-cart'
+      ) {
+        return;
+      }
 
-    renderCheckout(block, config, state);
-  });
+      renderCheckout(
+        block,
+        config,
+        state,
+      );
+    },
+  );
 }
